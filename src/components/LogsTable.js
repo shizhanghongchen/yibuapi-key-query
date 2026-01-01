@@ -433,6 +433,7 @@ const LogsTable = () => {
     const csvData = logs.map((log) => {
       const row = {
         时间: renderTimestamp(log.created_at),
+        令牌名称: log.token_name,
         模型: log.model_name,
         用时: log.use_time,
       };
