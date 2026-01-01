@@ -157,9 +157,18 @@ const LogsTable = () => {
       }
     } catch (e) {
       console.log(e);
-      Toast.error("令牌已用尽");
+      // 优化错误提示：解析接口返回的具体错误信息
+      let errorMessage = "令牌查询失败";
+      if (e.response && e.response.data && e.response.data.error) {
+        // 如果接口返回了具体的错误信息，使用它
+        errorMessage = e.response.data.error.message || "令牌已用尽";
+      } else if (e.message) {
+        errorMessage = e.message;
+      }
+      Toast.error(errorMessage);
       resetData(activeTabKey); // 如果发生错误，重置所有数据为默认值
       setLoading(false);
+      return; // 提前返回，避免继续执行后续代码
     }
     try {
       if (process.env.REACT_APP_SHOW_DETAIL === "true") {
