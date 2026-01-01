@@ -608,10 +608,7 @@ const LogsTable = () => {
                     theme="borderless"
                     type="primary"
                     onClick={(e) => exportCSV(e)}
-                    disabled={
-                      !activeTabData.tokenValid ||
-                      activeTabData.logs.length === 0
-                    }
+                    disabled={activeTabData.logs.length === 0}
                   >
                     导出为CSV文件
                   </Button>
