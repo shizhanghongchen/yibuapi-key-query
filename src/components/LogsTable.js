@@ -166,9 +166,7 @@ const LogsTable = () => {
         errorMessage = e.message;
       }
       Toast.error(errorMessage);
-      resetData(activeTabKey); // 如果发生错误，重置所有数据为默认值
-      setLoading(false);
-      return; // 提前返回，避免继续执行后续代码
+      // 不要提前返回，让调用详情接口继续执行
     }
     try {
       if (process.env.REACT_APP_SHOW_DETAIL === "true") {
