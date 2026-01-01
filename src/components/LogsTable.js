@@ -428,15 +428,36 @@ const LogsTable = () => {
     e.stopPropagation();
     const activeTabData = tabData[activeTabKey] || { logs: [] };
     const { logs } = activeTabData;
-    const csvData = logs.map((log) => ({
-      时间: renderTimestamp(log.created_at),
-      模型: log.model_name,
-      用时: log.use_time,
-      提示: log.prompt_tokens,
-      补全: log.completion_tokens,
-      花费: log.quota,
-      详情: log.content,
-    }));
+
+    // 根据环境变量动态生成CSV字段
+    const csvData = logs.map((log) => {
+      const row = {
+        时间: renderTimestamp(log.created_at),
+        模型: log.model_name,
+        用时: log.use_time,
+      };
+
+      // 根据环境变量决定是否包含"提示"列
+      if (process.env.REACT_APP_SHOW_PROMPT_TOKENS === "true") {
+        row.提示 = log.prompt_tokens;
+      }
+
+      // 根据环境变量决定是否包含"补全"列
+      if (process.env.REACT_APP_SHOW_COMPLETION_TOKENS === "true") {
+        row.补全 = log.completion_tokens;
+      }
+
+      // 始终包含"花费"列
+      row.花费 = log.quota;
+
+      // 根据环境变量决定是否包含"详情"列
+      if (process.env.REACT_APP_SHOW_CONTENT_DETAIL === "true") {
+        row.详情 = log.content;
+      }
+
+      return row;
+    });
+
     const csvString = "\ufeff" + Papa.unparse(csvData);
 
     try {
