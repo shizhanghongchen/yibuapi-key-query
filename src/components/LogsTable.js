@@ -184,9 +184,8 @@ const LogsTable = () => {
         }
       }
     } catch (e) {
-      Toast.error("查询失败，请输入正确的令牌");
-      resetData(activeTabKey); // 如果发生错误，重置所有数据为默认值
-      setLoading(false);
+      console.log("调用详情接口失败:", e);
+      // 调用详情失败时不影响页面展示，继续执行
     }
     setTabData((prevData) => ({
       ...prevData,
